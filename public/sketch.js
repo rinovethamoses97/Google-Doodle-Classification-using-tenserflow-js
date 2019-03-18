@@ -154,7 +154,9 @@ async function predict(){
 	}
 	var x=tf.tensor([testx],[1,28,28,1]);
 	// var x=tf.tensor(trainTrainingDatax[900],[1,28,28,1]);
-	tfmodel.predict(x).print();
+	var result=tfmodel.predict(x);
+	result.print();
+	document.getElementById("result").innerHTML=result
 }
 function find_max(a){
 	var  max=a[0];
