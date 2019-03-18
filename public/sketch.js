@@ -1,9 +1,11 @@
 var cats;
 var rainbows;
 var trains;
+var clocks
 var catTrainingDatax=[];
 var trainTrainingDatax=[];
 var rainbowTrainingDatax=[];
+var clockTrainingDatax=[];
 var imageSize=1000;
 var img;
 var tfmodel;
@@ -11,6 +13,7 @@ function preload(){
 	cats=loadBytes("cat1000.bin");
 	rainbows=loadBytes("rainbow1000.bin");
 	trains=loadBytes("train1000.bin");
+	// clocks=loadBytes("clock.bin");
 }
 function createData(){
 	var index=0;
@@ -40,6 +43,16 @@ function createData(){
 		}
 		rainbowTrainingDatax.push(row);
 	}
+	// index=0;
+	// for(var i=0;i<784*1000;i++){
+	// 	var row=[];
+	// 	for(var j=0;j<784;j++){
+	// 		row.push(clocks.bytes[index]/255);
+	// 		index++;
+	// 	}
+	// 	clockTrainingDatax.push(row);
+	// }
+	
 }
 function setup(){
 	createCanvas(280,280);
@@ -53,9 +66,9 @@ function setup(){
 	// img.loadPixels();
 	// var index=0;
 	// for(var i=0;i<784;i++){
-	// 	img.pixels[index+0]=trainTrainingDatax[0][i];
-	// 	img.pixels[index+1]=trainTrainingDatax[0][i];
-	// 	img.pixels[index+2]=trainTrainingDatax[0][i];
+	// 	img.pixels[index+0]=clockTrainingDatax[0][i];
+	// 	img.pixels[index+1]=clockTrainingDatax[0][i];
+	// 	img.pixels[index+2]=clockTrainingDatax[0][i];
 	// 	img.pixels[index+3]=255;
 	// 	index+=4;
 	// }
@@ -136,7 +149,7 @@ async function predict(){
 	img.loadPixels();
 	var index=0;
 	for(var i=0;i<img.pixels.length;i+=4){
-		testx[index]=img.pixels[i];
+		testx[index]=img.pixels[i]/255;
 		index++;
 	}
 	var x=tf.tensor([testx],[1,28,28,1]);
