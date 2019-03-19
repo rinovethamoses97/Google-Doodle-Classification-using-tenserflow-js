@@ -13,7 +13,7 @@ function preload(){
 	cats=loadBytes("cat1000.bin");
 	rainbows=loadBytes("rainbow1000.bin");
 	trains=loadBytes("train1000.bin");
-	// clocks=loadBytes("clock.bin");
+	clocks=loadBytes("clock.npy");
 }
 function createData(){
 	var index=0;
@@ -43,15 +43,15 @@ function createData(){
 		}
 		rainbowTrainingDatax.push(row);
 	}
-	// index=0;
-	// for(var i=0;i<784*1000;i++){
-	// 	var row=[];
-	// 	for(var j=0;j<784;j++){
-	// 		row.push(clocks.bytes[index]/255);
-	// 		index++;
-	// 	}
-	// 	clockTrainingDatax.push(row);
-	// }
+	index=80;
+	for(var i=0;i<1000;i++){
+		var row=[];
+		for(var j=0;j<784;j++){
+			row.push(clocks.bytes[index]/255);
+			index++;
+		}
+		clockTrainingDatax.push(row);
+	}
 	
 }
 function setup(){
@@ -60,7 +60,7 @@ function setup(){
 	createData();
 	// createtfmodel();
 	// train()
-	// test();
+	test();
 	// code to diaply a image
 	// img=createImage(28,28);
 	// img.loadPixels();
@@ -73,6 +73,7 @@ function setup(){
 	// 	index+=4;
 	// }
 	// img.updatePixels();
+	// img.resize(280,280);
 	// image(img,0,0);
 }
 function createtfmodel(){
@@ -102,7 +103,7 @@ function createtfmodel(){
     }));
     tfmodel.add(tf.layers.flatten());
     tfmodel.add(tf.layers.dense({
-      units: 3,
+      units: 4,
       kernelInitializer: 'VarianceScaling',
       activation: 'softmax'
     }));
@@ -120,14 +121,17 @@ async function train(){
 	var trainy=[];
 	for(var j=0;j<800;j++){
 		trainx.push(catTrainingDatax[j]);
-		trainy.push([1,0,0]);
+		trainy.push([1,0,0,0]);
 		trainx.push(trainTrainingDatax[j]);
-		trainy.push([0,1,0]);
+		trainy.push([0,1,0,0]);
 		trainx.push(rainbowTrainingDatax[j]);
-		trainy.push([0,0,1]);
+		trainy.push([0,0,1,0]);
+		trainx.push(clockTrainingDatax[j]);
+		trainy.push([0,0,0,1]);
+		
 	}
-	var x=tf.tensor(trainx,[2400,28,28,1]);
-	var y=tf.tensor(trainy,[2400,3]);
+	var x=tf.tensor(trainx,[3200,28,28,1]);
+	var y=tf.tensor(trainy,[3200,4]);
 	for(var i=0;i<iterations;i++){
 		var options={
 			validationData:null,
