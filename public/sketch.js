@@ -203,6 +203,9 @@ async function test(){
 	}
 	console.log("Accuracy= "+((correct/total)*100)+"%");
 }
+function clearScreen(){
+	background(0);
+}
 function draw(){
 	strokeWeight(8);
 	stroke(255);
